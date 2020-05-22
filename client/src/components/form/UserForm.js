@@ -27,7 +27,6 @@ function UserForm(props) {
     return (
         <div className="Form">
             <div className="Form-box">
-                <h1>{test.name}</h1>
                 <div className="row">
                     <Illustration />
                     <Form
