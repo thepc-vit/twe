@@ -46,7 +46,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Global variables
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
@@ -57,6 +57,18 @@ app.use(function(req, res, next) {
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+//////DO NOT REMOVE, THIS CONNECTS TO REACT
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+///////////
+
+//API CONNECTIONS for React
+app.get('/api/client', (req, res) => {
+  res.json({ name: "Sid", message: "This doesnt work" })
+})
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
