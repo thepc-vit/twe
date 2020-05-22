@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const db = require('/Users/sanjitkumar/personal_projects/twe/db/db.js')
+
+
 // Load User model
 const User = require('../models/User');
 const { forwardAuthenticated } = require('../config/auth');
@@ -38,41 +41,61 @@ router.post('/register', (req, res) => {
       password2
     });
   } else {
-    User.findOne({ email: email }).then(user => {
-      if (user) {
-        errors.push({ msg: 'Email already exists' });
-        res.render('register', {
-          errors,
-          name,
-          email,
-          password,
-          password2
-        });
-      } else {
-        const newUser = new User({
-          name,
-          email,
-          password
-        });
 
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then(user => {
-                req.flash(
-                  'success_msg',
-                  'You are now registered and can log in'
-                );
-                res.redirect('/users/login');
-              })
-              .catch(err => console.log(err));
-          });
-        });
-      }
-    });
+
+    // REPLACE THIS FIND WITH A SELECT QUERY AND CHECK IF FOR THE SAME
+    // console.log("Email: ",typeof(email))
+    findUserQuery = "select * from users where email_id = ?"
+    // console.log("FinduserQuery: ",findUserQuery,email)
+            db.query(findUserQuery, [email], (err, user) => {
+              if (err) throw err;
+              // console.log("User Data: ",user);
+              if (user[0]){
+                errors.push({ msg: 'Email already exists' });
+                res.render('register', {
+                  errors,
+                  name,
+                  email,
+                  password,
+                  password2
+                });
+              }
+              else{
+                const newUser = new User({
+                  name,
+                  email,
+                  password
+                });
+
+                bcrypt.genSalt(10, (err, salt) => {
+                  bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    
+                    // console.log("newUser: ",newUser)
+                    // HERE WRITE A SQL QUERY TO INSERT TO MYSQL USERS TABLE (ATTR: ID,NAME,EMAIL,PASSWORD,DATE)
+                    createUserQuery = "insert into users(email_id,password) values (?,?);"
+                    db.query(createUserQuery, [newUser.email, newUser.password] ,(err, result) => {
+                      if (err) throw err;
+                      // console.log("1 User inserted: ",result);
+                      req.flash(
+                        'success_msg',
+                        'You are now registered and can log in'
+                      );
+                      res.redirect('/users/login');
+                      
+                  })
+        
+        
+                  });
+                });
+                
+
+      
+              }
+
+          })
+
   }
 });
 
