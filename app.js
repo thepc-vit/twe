@@ -17,7 +17,9 @@ const db = require('./config/keys').mongoURI;
 mongoose
   .connect(
     db,
-    { useNewUrlParser: true }
+    { useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
   )
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
@@ -80,6 +82,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5100;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
