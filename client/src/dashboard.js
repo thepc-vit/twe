@@ -1,11 +1,16 @@
 import React from 'react';
-import UserForm from './components/form/UserForm'
+import { Link } from 'react-router-dom'
 
 function Dashboard() {
     document.title = "Dashboard"
     return (
         <div>
-            <UserForm />
+            <ul>
+                <li>
+                    <Link to="/">Welcome</Link>
+                </li>
+            </ul>
+            <h1>Welcome to Dashboard</h1>
         </div>
     );
 }

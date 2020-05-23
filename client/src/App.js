@@ -1,16 +1,18 @@
 import React from 'react';
-import UserForm from './components/form/UserForm'
 import { Link } from 'react-router-dom'
 
 function App() {
+  document.title = "Welcome"
   return (
     <div>
       <ul>
         <li>
           <Link to="/dashboard"> Dashboard</Link>
         </li>
+        <li>
+          <Link to="/welcome"> Welcome</Link>
+        </li>
       </ul>
-      <UserForm />
     </div>
   );
 }

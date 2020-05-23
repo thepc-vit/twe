@@ -1,16 +1,16 @@
 import React from 'react'
 import Form from './MainForm'
 import Illustration from './Illustration'
-import axios from 'axios'
+// import axios from 'axios'
 
 function UserForm(props) {
     const [status, setStatus] = React.useState("Welcome");
-    const [test, setTest] = React.useState({});
+    // const [test, setTest] = React.useState({});
 
-    React.useEffect(() => {
-        axios.get('http://localhost:5000/api/client')
-            .then(res => setTest(res.data))
-    }, [])
+    // React.useEffect(() => {
+    //     axios.get('http://localhost:5000/api/client')
+    //         .then(res => setTest(res.data))
+    // }, [])
 
 
     function handleClick(event) {
@@ -28,7 +28,9 @@ function UserForm(props) {
         <div className="Form">
             <div className="Form-box">
                 <div className="row">
-                    <Illustration />
+                    <Illustration
+                        status={status}
+                    />
                     <Form
                         status={status}
                         handleClick={handleClick}
