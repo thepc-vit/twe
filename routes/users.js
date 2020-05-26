@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const db = require('/Users/sanjitkumar/personal_projects/twe/db/db.js')
+const db = require('D:/Coding Stuff/twe/db/db.js')
 
 
 // Load User model
@@ -67,6 +67,9 @@ router.post('/register', (req, res) => {
                   password
                 });
 
+                var ts = Date.now()
+                var date_obj = new Date(ts);
+                var date = date_obj.getDate() + "-" + (date_obj.getMonth() + 1) + "-" + date_obj.getFullYear();
                 bcrypt.genSalt(10, (err, salt) => {
                   bcrypt.hash(newUser.password, salt, (err, hash) => {
                     if (err) throw err;
@@ -74,14 +77,16 @@ router.post('/register', (req, res) => {
                     
                     // console.log("newUser: ",newUser)
                     // HERE WRITE A SQL QUERY TO INSERT TO MYSQL USERS TABLE (ATTR: ID,NAME,EMAIL,PASSWORD,DATE)
-                    createUserQuery = "insert into users(email_id,password) values (?,?);"
-                    db.query(createUserQuery, [newUser.email, newUser.password] ,(err, result) => {
+                    createUserQuery = "insert into users(email_id,password, date_joined, name) values (?,?,?,?);"
+                    db.query(createUserQuery, [newUser.email, newUser.password, date, newUser.name] ,(err, result) => {
                       if (err) throw err;
                       // console.log("1 User inserted: ",result);
                       req.flash(
                         'success_msg',
                         'You are now registered and can log in'
                       );
+                      console.log(date);
+                      console.log(date_obj);
                       res.redirect('/users/login');
                       
                   })

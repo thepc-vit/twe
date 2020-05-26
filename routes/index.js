@@ -16,10 +16,17 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
 
 router.post('/submit', ensureAuthenticated, (req, res) =>{
   const {atitle, atype, acontent} = req.body;
-  const newArticle = new Article({ atype, atitle, acontent});
-  console.log("The new Article Doc: ",newArticle)
-  insertArticleQuery = "INSERT into ARTICLES(atype,atitle,acontent) VALUES (?,?,?)"
-  db.query(insertArticleQuery,[atype,atitle,acontent],(err,article) => {
+  const user = req.user;
+  var author = user.name;
+  const newArticle = new Article({ atype, atitle, acontent, author});
+  console.log("The new Article Doc: ",newArticle);
+  
+  var ts = Date.now()
+  var date_obj = new Date(ts);
+  var date = date_obj.getDate() + "-" + (date_obj.getMonth() + 1) + "-" + date_obj.getFullYear();
+
+  insertArticleQuery = "INSERT into ARTICLES(atype,atitle,acontent, date_submitted, author) VALUES (?,?,?, ?,?)"
+  db.query(insertArticleQuery,[atype,atitle,acontent, date, author],(err,article) => {
     if (err) throw err
     console.log("Current Article Was Updated in mySQL db: ",article)
     res.render('submit');
