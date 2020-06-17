@@ -6,6 +6,18 @@ function Form(props) {
 
     const status = props.status;
 
+    const [regform, setRegform] = React.useState({
+        name: "",
+        email: "",
+        password: "",
+        confirm: ""
+    });
+
+    const [logform, setLogform] = React.useState({
+        email: "",
+        password: ""
+    })
+
     function handleClick(event) {
         props.handleClick(event)
     }
@@ -14,36 +26,68 @@ function Form(props) {
         status === "Login" && props.setStatus("Register")
     }
     function handleChange(event) {
-        // const [name, value] = event.target;
+        const name = event.target.name
+        const value = event.target.value
+
+        if (status === "Register") {
+            setRegform(
+                previous => {
+                    switch (name) {
+                        case "fullName": return { name: value, email: previous.email, password: previous.password, confirm: previous.confirm };
+                        case "email": return { name: previous.name, email: value, password: previous.password, confirm: previous.confirm };
+                        case "pass": return { name: previous.name, email: previous.email, password: value, confirm: previous.confirm };
+                        case "cnfPass": return { name: previous.name, email: previous.email, password: previous.password, confirm: value };
+                        default: return (null)
+                    }
+
+                }
+            )
+        } else if (status === "Login") {
+            setLogform(
+                previous => {
+                    switch (name) {
+                        case "email": return { email: value, password: previous.password };
+                        case "pass": return { email: previous.email, password: value };
+                        default: return (null)
+                    }
+                }
+            )
+        }
+    }
+    function handleSubmit() {
+        console.log("Success");
+        console.log(regform);
+        console.log(logform);
+
+
+
     }
     return (
         <div className="col-sm-4 col-md-6">
-            <form>
-                <h1 className="form-header">{status}</h1>
-                {status === "Welcome" ?
+            <h1 className="form-header">{status}</h1>
+            {status === "Welcome" ?
+                <div>
+                    <Button classAdd={"btn-outline"} name="Register" handleClick={handleClick} />
+                    <Button classAdd={"btn-solid"} name="Login" handleClick={handleClick} />
+                </div>
+                :
+                status === "Register" ?
                     <div>
-                        <Button classAdd={"btn-outline"} name="Register" handleClick={handleClick} />
-                        <Button classAdd={"btn-solid"} name="Login" handleClick={handleClick} />
+                        <Input type="input" name="fullName" placeholder="First name" onChange={handleChange} />
+                        <Input type="input" name="email" placeholder="Email address" onChange={handleChange} />
+                        <Input type="password" name="pass" placeholder="Password" onChange={handleChange} />
+                        <Input type="password" name="cnfPass" placeholder="Confirm Password" onChange={handleChange} />
+                        <Button classAdd={"btn-solid"} name={status} handleClick={handleSubmit} />
+                        <p className="small" onClick={redirect}> Have an account? </p>
                     </div>
                     :
-                    status === "Register" ?
-                        <div>
-                            <Input type="input" name="fullName" placeholder="First name" onChange={handleChange} />
-                            <Input type="input" name="email" placeholder="Email address" />
-                            <Input type="password" name="pass" placeholder="Password" />
-                            <Input type="password" name="cnfPass" placeholder="Confirm Password" />
-                            <Button classAdd={"btn-solid"} name={status} handleClick={handleClick} link="dashboard" />
-                            <p class="small" onClick={redirect}> Have an account? </p>
-                        </div>
-                        :
-                        <div>
-                            <Input type="input" name="email" placeholder="Email address" />
-                            <Input type="password" name="pass" placeholder="Password" />
-                            <Button classAdd={"btn-solid"} name={status} handleClick={handleClick} link="dashboard" />
-                            <p class="small" onClick={redirect}> Don't have an account? </p>
-                        </div>
-                }
-            </form>
+                    <div>
+                        <Input type="input" name="email" placeholder="Email address" onChange={handleChange} />
+                        <Input type="password" name="pass" placeholder="Password" onChange={handleChange} />
+                        <Button classAdd={"btn-solid"} name={status} handleClick={handleSubmit} />
+                        <p className="small" onClick={redirect}> Don't have an account? </p>
+                    </div>
+            }
         </div>
     )
 }

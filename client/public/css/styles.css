@@ -26,7 +26,8 @@
   border-radius: 1rem;
   box-shadow: 1px 1px 50px #0a0a0a;
 }
-.row {
+.row,
+.row-welcome {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,7 +38,8 @@
   margin-bottom: 1rem;
   font-family: Burbank;
 }
-input {
+input,
+textarea {
   width: 70%;
   color: #fff;
   background-color: transparent;
@@ -48,7 +50,9 @@ input {
   padding: 10px;
 }
 input:active,
-input:hover {
+input:hover,
+textarea:active,
+textarea:hover {
   width: 70%;
   color: #fff;
   background-color: transparent;
@@ -58,13 +62,15 @@ input:hover {
   padding: 10px;
   margin-bottom: 5px;
 }
-input:focus {
+input:focus,
+textarea:focus {
   outline: none;
 }
 .illustration {
   width: 50%;
 }
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #00fff2;
   opacity: 0.3;
 }
@@ -157,4 +163,12 @@ input::placeholder {
   .illustration {
     width: 60%;
   }
+}
+
+.test-text {
+  background-color: transparent;
+  text-align: right;
+  margin-right: 2px;
+  vertical-align: center;
+  margin-bottom: 0;
 }
