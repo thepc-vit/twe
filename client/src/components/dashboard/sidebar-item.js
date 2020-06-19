@@ -2,8 +2,8 @@ import React from 'react'
 
 function Item(props) {
 
-    function handleClick() {
-
+    function handleClick(event) {
+        props.redirect(event)
     }
 
     return (

@@ -9,7 +9,7 @@ import UserForm from './components/form/UserForm'
 const routing = (
   <Router>
     <div>
-      <p className="test-text">This is test release with version: <b>a.1.1.0</b></p>
+      <p className="test-text">This is test release with version: <b>a.2.0.0</b></p>
       <Switch>
         <Route exact path="/" component={App} />
         <Route path="/dashboard" component={Dashboard} />

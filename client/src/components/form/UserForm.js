@@ -5,13 +5,14 @@ import Illustration from './Illustration'
 
 function UserForm(props) {
     const [status, setStatus] = React.useState("Welcome");
-    // const [test, setTest] = React.useState({});
+    // const [test, setTest] = React.useState();
 
     // React.useEffect(() => {
-    //     axios.get('http://localhost:5000/api/client')
+    //     axios.get('http://thepc.herokuapp.com/api')
     //         .then(res => setTest(res.data))
     // }, [])
 
+    // console.log(test);
 
     function handleClick(event) {
         const name = event.target.name;

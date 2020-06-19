@@ -8,9 +8,9 @@ function Button(props) {
 
     }
     return (
-
         <button
             className={"btn btn-lg btn-block " + props.classAdd}
+            // type="submit"
             onClick={handleClick}
             name={_.kebabCase(_.lowerCase(props.name + " - btn"))}>{props.name}</button>
     )

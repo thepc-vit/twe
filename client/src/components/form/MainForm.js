@@ -1,9 +1,10 @@
 import React from 'react'
 import Input from './Input'
 import Button from './Button'
+import axios from 'axios'
+import qs from 'qs'
 
 function Form(props) {
-
     const status = props.status;
 
     const [regform, setRegform] = React.useState({
@@ -17,6 +18,8 @@ function Form(props) {
         email: "",
         password: ""
     })
+    const [register, setRegister] = React.useState(false)
+    const [login, setLogin] = React.useState(false)
 
     function handleClick(event) {
         props.handleClick(event)
@@ -46,22 +49,34 @@ function Form(props) {
             setLogform(
                 previous => {
                     switch (name) {
-                        case "email": return { email: value, password: previous.password };
-                        case "pass": return { email: previous.email, password: value };
+                        case "emailLogin": return { email: value, password: previous.password };
+                        case "passLogin": return { email: previous.email, password: value };
                         default: return (null)
                     }
                 }
             )
         }
     }
+    var rForm = regform;
+    var lForm = logform;
     function handleSubmit() {
-        console.log("Success");
-        console.log(regform);
-        console.log(logform);
-
-
-
+        setRegister(previous => !previous)
     }
+
+    React.useEffect(() => {
+        axios.post('http://thepc.herokuapp.com/api', qs.stringify(rForm), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error.response.data.message)
+            });
+    }, [register])
+
     return (
         <div className="col-sm-4 col-md-6">
             <h1 className="form-header">{status}</h1>
@@ -82,13 +97,14 @@ function Form(props) {
                     </div>
                     :
                     <div>
-                        <Input type="input" name="email" placeholder="Email address" onChange={handleChange} />
-                        <Input type="password" name="pass" placeholder="Password" onChange={handleChange} />
+                        <Input type="input" name="emailLogin" placeholder="Email address" onChange={handleChange} />
+                        <Input type="password" name="passLogin" placeholder="Password" onChange={handleChange} />
                         <Button classAdd={"btn-solid"} name={status} handleClick={handleSubmit} />
                         <p className="small" onClick={redirect}> Don't have an account? </p>
                     </div>
             }
         </div>
+
     )
 }
 
